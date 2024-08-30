@@ -2,9 +2,9 @@
 export function updateDarkModeTheme(enableDarkMode?: boolean) {
 	if (enableDarkMode !== undefined) {
 		if (enableDarkMode) {
-			localStorage.setItem('theme', '1');
+			localStorage.setItem('theme', 'dark');
 		} else {
-			localStorage.removeItem('theme');
+			localStorage.setItem('theme', 'light');
 		}
 	}
 
