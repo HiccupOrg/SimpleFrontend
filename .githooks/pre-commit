@@ -1,0 +1,12 @@
+#!/bin/sh
+# pre-commit hook to run graphql codegen and prettier
+
+echo "Running 'pnpm gqlgen' to generate GraphQL code..."
+
+if ! pnpm gqlgen; then
+  echo "GraphQL codegen failed, aborting commit."
+fi
+
+if ! pnpm format; then
+  echo "Prettier failed, aborting commit."
+fi
