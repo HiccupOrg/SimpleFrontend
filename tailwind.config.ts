@@ -68,6 +68,12 @@ export default {
 					...TailwindColors.sky
 				},
 				background: 'rgb(var(--color-background) / <alpha-value>)'
+			},
+			textColor: {
+				default: {
+					DEFAULT: 'rgb(var(--color-primary-text) / <alpha-value>)',
+					...TailwindColors.slate
+				}
 			}
 		}
 	},

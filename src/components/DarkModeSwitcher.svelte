@@ -14,13 +14,10 @@
 	class="bg-background"
 	on:click={() => updateColorMode(getCurrentColorMode() === 'dark' ? 'light' : 'dark')}
 >
-	<div
-		id="theme-toggle"
-		class="rounded-lg p-2.5 text-sm text-gray-500 hover:animate-pulse focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:focus:ring-gray-700"
-	>
+	<div id="theme-toggle" class="rounded-lg p-2.5 text-sm text-default hover:animate-pulse">
 		{#if colorMode === 'dark'}
 			<svg
-				class="h-5 w-5 text-primary-200"
+				class="h-5 w-5"
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +29,7 @@
 			>
 		{:else}
 			<svg
-				class="dark h-5 w-5 text-primary"
+				class="h-5 w-5"
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				xmlns="http://www.w3.org/2000/svg"
