@@ -10,7 +10,7 @@ dotenv.config({
 });
 
 const config: CodegenConfig = {
-	schema: process.env.REGISTRY_URL!,
+	schema: process.env.HF_BUSINESS_ENDPOINT!,
 	documents: ['src/**/*.{ts,tsx}'],
 	generates: {
 		'./src/lib/business.generated.ts': {

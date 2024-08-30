@@ -59,8 +59,15 @@ export default {
 				vfull: '100vh'
 			},
 			colors: {
-				primary: 'rgb(var(--color-primary) / <alpha-value>)',
-				secondary: 'rgb(var(--color-secondary) / <alpha-value>)'
+				primary: {
+					DEFAULT: 'rgb(var(--color-primary) / <alpha-value>)',
+					...TailwindColors.indigo,
+				},
+				secondary: {
+					DEFAULT: 'rgb(var(--color-secondary) / <alpha-value>)',
+					...TailwindColors.sky,
+				},
+				background: 'rgb(var(--color-background) / <alpha-value>)'
 			}
 		}
 	},
