@@ -24,8 +24,7 @@ const config: CodegenConfig = {
 	hooks: {
 		afterOneFileWrite: (filepath) => {
 			const data = fs.readFileSync(filepath, 'utf-8');
-			const updatedData = data
-				.replaceAll(': any', ': unknown')
+			const updatedData = data.replaceAll(': any', ': unknown');
 			fs.writeFileSync(filepath, updatedData, 'utf-8');
 			return filepath;
 		}

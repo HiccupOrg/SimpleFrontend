@@ -10,3 +10,5 @@ fi
 if ! pnpm format; then
   echo "Prettier failed, aborting commit."
 fi
+
+exit 0
