@@ -1,8 +1,8 @@
 <script lang="ts">
 </script>
 
-<style lang="sass">
-</style>
+<div class="container font-sans"></div>
 
-<div class="container font-sans">
-</div>
+<style lang="sass">
+
+</style>

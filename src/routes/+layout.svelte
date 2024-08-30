@@ -9,5 +9,5 @@
 	updateDarkModeTheme();
 </script>
 
-<Background/>
+<Background />
 <slot></slot>

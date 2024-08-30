@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
+import TailwindColors from 'tailwindcss/colors';
 
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -34,14 +35,14 @@ export default {
 					'Consolas',
 					'Liberation Mono',
 					'monospace'
-				],
+				]
 			},
 			borderRadius: {
-				'none': '0',
-				'sm': '.125rem',
+				none: '0',
+				sm: '.125rem',
 				DEFAULT: '.25rem',
-				'lg': '.5rem',
-				'full': '9999px',
+				lg: '.5rem',
+				full: '9999px'
 			},
 			opacity: {
 				'0': '0',
@@ -49,18 +50,20 @@ export default {
 				'40': '0.4',
 				'60': '0.6',
 				'80': '0.8',
-				'100': '1',
+				'100': '1'
 			},
 			width: {
-				"vfull": "100vw",
+				vfull: '100vw'
 			},
 			height: {
-				"vfull": "100vh",
+				vfull: '100vh'
 			},
-		},
+			colors: {
+				primary: 'rgb(var(--color-primary) / <alpha-value>)',
+				secondary: 'rgb(var(--color-secondary) / <alpha-value>)'
+			}
+		}
 	},
 
-	plugins: [
-		typography
-	],
+	plugins: [typography]
 } as Config;

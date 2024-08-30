@@ -10,11 +10,16 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"gqlgen": "graphql-codegen",
+		"gqlgen:watch": "graphql-codegen -w"
 	},
 	"devDependencies": {
+		"@graphql-codegen/cli": "^5.0.2",
+		"@graphql-typed-document-node/core": "^3.2.0",
 		"@melt-ui/pp": "^0.3.2",
 		"@melt-ui/svelte": "^0.83.0",
+		"@parcel/watcher": "^2.4.1",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^3.0.4",
@@ -23,10 +28,12 @@
 		"@tailwindcss/typography": "^0.5.14",
 		"@types/eslint": "^9.6.0",
 		"autoprefixer": "^10.4.20",
+		"dotenv": "^16.4.5",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
 		"globals": "^15.0.0",
+		"graphql": "^16.9.0",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"prettier-plugin-tailwindcss": "^0.6.5",
@@ -40,7 +47,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@apollo/client": "^3.11.5",
 		"bits-ui": "^0.21.13",
+		"install": "^0.13.0",
+		"lru-cache": "^11.0.0",
+		"mediasoup-client": "^3.7.16",
 		"socket.io-client": "^4.7.5"
 	}
 }
