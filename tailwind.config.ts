@@ -61,11 +61,11 @@ export default {
 			colors: {
 				primary: {
 					DEFAULT: 'rgb(var(--color-primary) / <alpha-value>)',
-					...TailwindColors.indigo,
+					...TailwindColors.indigo
 				},
 				secondary: {
 					DEFAULT: 'rgb(var(--color-secondary) / <alpha-value>)',
-					...TailwindColors.sky,
+					...TailwindColors.sky
 				},
 				background: 'rgb(var(--color-background) / <alpha-value>)'
 			}

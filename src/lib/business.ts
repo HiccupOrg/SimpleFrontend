@@ -14,6 +14,6 @@ export const GraphQLEndpoint = import.meta.env.HF_BUSINESS_ENDPOINT;
 export const GraphQLClient = new ApolloClient({
 	uri: GraphQLEndpoint,
 	cache: new InMemoryCache({
-		resultCaching: false,
-	}),
+		resultCaching: false
+	})
 });

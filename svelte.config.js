@@ -24,7 +24,7 @@ const config = {
 			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH || ''
 		},
 		version: {
-			name: child_process.execSync('git rev-parse HEAD').toString().trim(),
+			name: child_process.execSync('git rev-parse HEAD').toString().trim()
 		}
 	}
 };
