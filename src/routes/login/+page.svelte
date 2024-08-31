@@ -11,8 +11,7 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { ApolloError } from '@apollo/client/core';
-	import { auth } from '$lib/store';
-	import { get } from 'svelte/store';
+	import { auth, userLoggedIn } from '$lib/store';
 
 	let submitting = false;
 	let challengeToken: null | string = null;
@@ -20,7 +19,7 @@
 	let password: string = '';
 	let turnstileDOM: Turnstile;
 
-	if (browser && get(auth).token != undefined) {
+	if (browser && userLoggedIn()) {
 		addToast({
 			data: {
 				title: 'Already login',
@@ -151,6 +150,13 @@
 				class="my-5 w-full flex-wrap text-default"
 				disabled={submitting}>Sign In</Button.Root
 			>
+			<div class="flex w-full flex-row justify-between text-default">
+				<a href="/register">
+					<Label.Root class="cursor-pointer font-mono"
+						>No account? Go create one</Label.Root
+					>
+				</a>
+			</div>
 		</form>
 	</div>
 </div>

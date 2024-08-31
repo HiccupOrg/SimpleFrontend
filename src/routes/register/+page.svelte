@@ -10,12 +10,26 @@
 	} from '$lib/business.generated';
 	import { goto } from '$app/navigation';
 	import { ApolloError } from '@apollo/client/core';
+	import { browser } from '$app/environment';
+	import { userLoggedIn } from '$lib/store';
 
 	let submitting = false;
 	let challengeToken: null | string = null;
 	let username: string = '';
 	let password: string = '';
 	let turnstileDOM: Turnstile;
+
+	if (browser && userLoggedIn()) {
+		addToast({
+			data: {
+				title: 'Already login',
+				description: 'Redirecting to home page in 3 seconds',
+				color: 'green'
+			},
+			closeDelay: 3000
+		});
+		setTimeout(() => goto('/home'), 3000);
+	}
 
 	function onFormSubmit(event: SubmitEvent) {
 		event.preventDefault();
@@ -129,6 +143,11 @@
 				class="my-5 w-full flex-wrap text-default"
 				disabled={submitting}>Register</Button.Root
 			>
+			<div class="flex w-full flex-row justify-between text-default">
+				<a href="/login">
+					<Label.Root class="cursor-pointer font-mono">Have account? Go login</Label.Root>
+				</a>
+			</div>
 		</form>
 	</div>
 </div>
