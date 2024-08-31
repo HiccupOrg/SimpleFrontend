@@ -11,12 +11,26 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { ApolloError } from '@apollo/client/core';
+	import { auth } from '$lib/store';
+	import { get } from 'svelte/store';
 
 	let submitting = false;
 	let challengeToken: null | string = null;
 	let username: string = '';
 	let password: string = '';
 	let turnstileDOM: Turnstile;
+
+	if (browser && get(auth).token != undefined) {
+		addToast({
+			data: {
+				title: 'Already login',
+				description: 'Redirecting to home page in 3 seconds',
+				color: 'green'
+			},
+			closeDelay: 3000
+		});
+		setTimeout(() => goto('/home'), 3000);
+	}
 
 	function onFormSubmit(event: SubmitEvent) {
 		event.preventDefault();
@@ -58,7 +72,9 @@
 				});
 
 				if (browser) {
-					window.localStorage.setItem('hiccupToken', result.data!.loginClassic.token);
+					auth.set({
+						token: result.data!.loginClassic.token
+					});
 				}
 			} catch (err) {
 				if (err instanceof ApolloError) {
