@@ -7,8 +7,4 @@ if ! pnpm gqlgen; then
   echo "GraphQL codegen failed, aborting commit."
 fi
 
-if ! pnpm format; then
-  echo "Prettier failed, aborting commit."
-fi
-
 exit 0

@@ -386,3 +386,13 @@ export type RegisterAnonymousMutation = {
 	__typename?: 'Mutation';
 	registerAnonymous: { __typename?: 'AnonymousUser'; id: unknown };
 };
+
+export type RegisterClassicMutationVariables = Exact<{
+	username: Scalars['String']['input'];
+	password: Scalars['String']['input'];
+}>;
+
+export type RegisterClassicMutation = {
+	__typename?: 'Mutation';
+	registerClassic: { __typename?: 'ClassicUser'; id: unknown };
+};

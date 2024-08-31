@@ -44,7 +44,7 @@
 		class="absolute left-5 top-2 h-1 w-[10%] overflow-hidden rounded-full bg-black/40"
 	>
 		<div
-			class="bg-magnum-500 h-full w-full"
+			class="h-full w-full bg-primary-500"
 			style={`transform: translateX(-${100 - (100 * ($percentage ?? 0)) / ($max ?? 1)}%)`}
 		/>
 	</div>
@@ -63,8 +63,8 @@
 		</div>
 		<button
 			use:melt={$close(id)}
-			class="text-magnum-500 hover:bg-magnum-900/50 absolute right-4 top-4 grid size-6 place-items-center
-          rounded-full"
+			class="absolute right-4 top-4 grid size-6 place-items-center rounded-full text-default
+          hover:bg-primary/50"
 		>
 			<CloseOutline class="size-4" />
 		</button>

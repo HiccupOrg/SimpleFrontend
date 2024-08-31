@@ -3,6 +3,12 @@
 	import { Turnstile } from 'svelte-turnstile';
 	import { getCurrentColorMode } from '$lib/darkMode';
 	import { addToast } from '$lib/components/toast/Toaster.svelte';
+	import { GraphQLClient, REGISTER_CLASSIC_IDENTIFY } from '$lib/business';
+	import type {
+		RegisterClassicMutation,
+		RegisterClassicMutationVariables
+	} from '$lib/business.generated';
+	import { goto } from '$app/navigation';
 
 	let submitting = false;
 	let challengeToken: null | string = null;
@@ -23,13 +29,51 @@
 			if (typeof challengeToken !== 'string') {
 				addToast({
 					data: {
-						title: 'Error',
+						title: 'Captcha Error',
 						description: 'You must finish captcha challenge first'
 					},
 					closeDelay: 3000
 				});
 				return;
 			}
+
+			const result = await GraphQLClient.mutate<
+				RegisterClassicMutation,
+				RegisterClassicMutationVariables
+			>({
+				mutation: REGISTER_CLASSIC_IDENTIFY,
+				variables: {
+					username,
+					password
+				},
+				context: {
+					headers: {
+						'X-Hiccup-Captcha': challengeToken
+					}
+				}
+			});
+
+			if (result.data === null) {
+				addToast({
+					data: {
+						title: 'Register failed',
+						description: result.errors?.reduce((acc, curr) => `${acc}\n${curr}`, '')
+					},
+					closeDelay: 3000
+				});
+				return;
+			}
+
+			addToast({
+				data: {
+					title: 'Register success',
+					description: 'Redirecting to login page in 3 seconds',
+					color: 'green'
+				},
+				closeDelay: 3000
+			});
+
+			setTimeout(() => goto('/login'), 3000);
 		})().finally(() => {
 			submitting = false;
 		});
@@ -49,14 +93,14 @@
 			<Label.Root class="self-start">Username</Label.Root>
 			<input
 				type="text"
-				class="h-10 w-full rounded-md px-3 py-2 text-default shadow-2xl"
+				class="h-10 w-full rounded-md bg-primary/30 px-3 py-2 text-default shadow-2xl"
 				placeholder="Enter your username"
 				bind:value={username}
 			/>
 			<Label.Root class="self-start">Password</Label.Root>
 			<input
 				type="password"
-				class="h-10 w-full rounded-md px-3 py-2 text-default shadow-2xl"
+				class="h-10 w-full rounded-md bg-primary/30 px-3 py-2 text-default shadow-2xl"
 				placeholder="Enter your password"
 				bind:value={password}
 			/>

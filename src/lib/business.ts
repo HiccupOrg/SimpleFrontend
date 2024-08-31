@@ -9,6 +9,14 @@ export const REGISTER_ANONYMOUS_IDENTIFY = gql`
 	}
 `;
 
+export const REGISTER_CLASSIC_IDENTIFY = gql`
+	mutation RegisterClassic($username: String!, $password: String!) {
+		registerClassic(username: $username, password: $password) {
+			id
+		}
+	}
+`;
+
 export const GraphQLEndpoint = import.meta.env.VITE_BUSINESS_ENDPOINT;
 
 export const GraphQLClient = new ApolloClient({
