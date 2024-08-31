@@ -152,10 +152,6 @@
 	</div>
 </div>
 
-<svelte:head>
-	<title>Register | Hiccup</title>
-</svelte:head>
-
 <style lang="scss">
 	.left-image {
 		background-size: cover;

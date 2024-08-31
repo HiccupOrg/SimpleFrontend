@@ -4,17 +4,13 @@
 	import { goto } from '$app/navigation';
 </script>
 
-<div class="flex font-sans justify-center items-center flex-col">
+<div class="flex flex-col items-center justify-center font-sans">
 	<DarkModeSwitcher />
-	<div class="flex m-3 flex-row">
+	<div class="m-3 flex flex-row">
 		<Button.Root class="mx-3" on:click={() => goto('/login')}>登录</Button.Root>
 		<Button.Root class="mx-3" on:click={() => goto('/register')}>注册</Button.Root>
 	</div>
 </div>
-
-<svelte:head>
-	<title>Hiccup - Open source media transfer project</title>
-</svelte:head>
 
 <style lang="sass">
 

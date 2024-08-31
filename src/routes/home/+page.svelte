@@ -8,6 +8,4 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Home - Hiccup</title>
-</svelte:head>
+<div class="flex items-center justify-center"></div>

@@ -67,7 +67,8 @@ export default {
 					DEFAULT: 'rgb(var(--color-secondary) / <alpha-value>)',
 					...TailwindColors.sky
 				},
-				background: 'rgb(var(--color-background) / <alpha-value>)'
+				background: 'rgb(var(--color-background) / <alpha-value>)',
+				navbar: 'rgb(var(--color-navbar) / <alpha-value>)'
 			},
 			textColor: {
 				default: {

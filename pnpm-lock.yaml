@@ -11,6 +11,9 @@ importers:
       '@apollo/client':
         specifier: ^3.11.5
         version: 3.11.5(graphql-ws@5.16.0(graphql@16.9.0))(graphql@16.9.0)
+      '@tabler/icons-svelte':
+        specifier: ^3.14.0
+        version: 3.14.0(svelte@4.2.19)
       install:
         specifier: ^0.13.0
         version: 0.13.0
@@ -1095,6 +1098,14 @@ packages:
 
   '@swc/helpers@0.5.12':
     resolution: {integrity: sha512-KMZNXiGibsW9kvZAO1Pam2JPTDBm+KSHMMHWdsyI/1DbIZjT2A6Gy3hblVXUMEDvUAKq+e0vL0X0o54owWji7g==}
+
+  '@tabler/icons-svelte@3.14.0':
+    resolution: {integrity: sha512-1o1ldrD+w8IoCCnOgBy2b8pip6Vio7sOHN+z7w4k9FBXnCZubbLvLYONWWFWqCESsugEc5q2Vhxm8B3Rjw4yPA==}
+    peerDependencies:
+      svelte: '>=3 <6 || >=5.0.0-next.0'
+
+  '@tabler/icons@3.14.0':
+    resolution: {integrity: sha512-OakKjK1kuDWKoNwdnHHVMt11kTZAC10iZpN/8o/CSYdeBH7S3v5n8IyqAYynFxLI8yBGTyBvljtvWdmWh57zSg==}
 
   '@tailwindcss/typography@0.5.15':
     resolution: {integrity: sha512-AqhlCXl+8grUz8uqExv5OTtgpjuVIwFTSXTrh8y9/pw6q2ek7fJ+Y8ZEVw7EB2DCcuCOtEjf9w3+J3rzts01uA==}
@@ -4447,6 +4458,13 @@ snapshots:
   '@swc/helpers@0.5.12':
     dependencies:
       tslib: 2.7.0
+
+  '@tabler/icons-svelte@3.14.0(svelte@4.2.19)':
+    dependencies:
+      '@tabler/icons': 3.14.0
+      svelte: 4.2.19
+
+  '@tabler/icons@3.14.0': {}
 
   '@tailwindcss/typography@0.5.15(tailwindcss@3.4.10)':
     dependencies:

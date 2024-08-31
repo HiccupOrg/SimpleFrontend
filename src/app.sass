@@ -8,12 +8,14 @@
     --color-secondary: 2 132 199
     --color-background: 199 210 254
     --color-primary-text: 30 41 59
+    --color-navbar: 255 251 235
 
   .dark
     --color-primary: 55 48 163
     --color-secondary: 7 89 133
     --color-background: 30 27 75
     --color-primary-text: 239 246 255
+    --color-navbar: 4 47 46
 
   [data-button-root]
     @apply inline-flex h-12 items-center justify-center rounded-xl bg-primary text-xl font-semibold text-default shadow-lg hover:bg-primary/95 active:scale-95 active:transition-all p-2.5 select-none
@@ -21,3 +23,11 @@
   [data-label-root]
     @apply inline-flex items-center text-base text-default w-fit p-2.5 rounded-2xl select-none font-semibold
 
+  [data-menu-trigger]
+    @apply inline-flex cursor-default items-center justify-center rounded-xl px-3 text-default text-sm font-medium !ring-0 !ring-transparent select-none  data-[highlighted]:bg-secondary data-[state=open]:bg-secondary
+
+  [data-menu-content]
+    @apply z-50 text-default w-full max-w-[220px] rounded-xl border-2 border-navbar bg-secondary/50 px-1 py-1.5 shadow-xl !ring-0 !ring-transparent
+
+  [data-menu-item]
+    @apply flex h-3 select-none items-center rounded-md py-3 pl-3 pr-1.5 text-sm text-default font-medium !ring-0 !ring-transparent data-[highlighted]:bg-secondary

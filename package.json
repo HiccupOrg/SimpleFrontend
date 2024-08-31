@@ -51,6 +51,7 @@
 	"type": "module",
 	"dependencies": {
 		"@apollo/client": "^3.11.5",
+		"@tabler/icons-svelte": "^3.14.0",
 		"install": "^0.13.0",
 		"lru-cache": "^11.0.0",
 		"mediasoup-client": "^3.7.16",
