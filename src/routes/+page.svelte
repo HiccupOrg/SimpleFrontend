@@ -6,6 +6,10 @@
 	<DarkModeSwitcher />
 </div>
 
+<svelte:head>
+	<title>Hiccup - Open source media transfer project</title>
+</svelte:head>
+
 <style lang="sass">
 
 </style>

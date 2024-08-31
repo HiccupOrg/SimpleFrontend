@@ -17,6 +17,14 @@ export const REGISTER_CLASSIC_IDENTIFY = gql`
 	}
 `;
 
+export const LOGIN_CLASSIC = gql`
+	mutation LoginClassic($username: String!, $password: String!) {
+		loginClassic(username: $username, password: $password) {
+			token
+		}
+	}
+`;
+
 export const GraphQLEndpoint = import.meta.env.VITE_BUSINESS_ENDPOINT;
 
 export const GraphQLClient = new ApolloClient({

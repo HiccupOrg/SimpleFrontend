@@ -9,6 +9,7 @@
 		RegisterClassicMutationVariables
 	} from '$lib/business.generated';
 	import { goto } from '$app/navigation';
+	import { ApolloError } from '@apollo/client/core';
 
 	let submitting = false;
 	let challengeToken: null | string = null;
@@ -32,36 +33,38 @@
 						title: 'Captcha Error',
 						description: 'You must finish captcha challenge first'
 					},
-					closeDelay: 3000
+					closeDelay: 1500
 				});
 				return;
 			}
 
-			const result = await GraphQLClient.mutate<
-				RegisterClassicMutation,
-				RegisterClassicMutationVariables
-			>({
-				mutation: REGISTER_CLASSIC_IDENTIFY,
-				variables: {
-					username,
-					password
-				},
-				context: {
-					headers: {
-						'X-Hiccup-Captcha': challengeToken
-					}
-				}
-			});
-
-			if (result.data === null) {
-				addToast({
-					data: {
-						title: 'Register failed',
-						description: result.errors?.reduce((acc, curr) => `${acc}\n${curr}`, '')
+			try {
+				await GraphQLClient.mutate<
+					RegisterClassicMutation,
+					RegisterClassicMutationVariables
+				>({
+					mutation: REGISTER_CLASSIC_IDENTIFY,
+					variables: {
+						username,
+						password
 					},
-					closeDelay: 3000
+					context: {
+						headers: {
+							'X-Hiccup-Captcha': challengeToken
+						}
+					}
 				});
-				return;
+			} catch (err) {
+				if (err instanceof ApolloError) {
+					addToast({
+						data: {
+							title: 'Register failed',
+							description: err.message
+						},
+						closeDelay: 1500
+					});
+					return;
+				}
 			}
 
 			addToast({
@@ -129,6 +132,10 @@
 		</form>
 	</div>
 </div>
+
+<svelte:head>
+	<title>Register | Hiccup</title>
+</svelte:head>
 
 <style lang="scss">
 	.left-image {
