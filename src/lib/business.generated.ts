@@ -26,6 +26,15 @@ export type AnonymousUser = UserBase & {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type ChannelInfo = {
+  __typename?: 'ChannelInfo';
+  configuration: Scalars['JSON']['output'];
+  id: Scalars['obfuscatedId']['output'];
+  joinable: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  serverId: Scalars['obfuscatedId']['output'];
+};
+
 export type ClassicUser = UserBase & {
   __typename?: 'ClassicUser';
   createdAt: Scalars['DateTime']['output'];
@@ -50,6 +59,8 @@ export type Mutation = {
   allocateMediaServer: MediaSignalServerConnectionInfo;
   /** Binding anonymous identify to a classic identify. Auto register public key if anonymous doesn't exist. */
   bindAnonymousIdentify: Scalars['Boolean']['output'];
+  /** Create alias for server */
+  createAliasForServer: Scalars['String']['output'];
   /** Create channel */
   createChannel: Channel;
   /** Create default administrator */
@@ -58,6 +69,8 @@ export type Mutation = {
   createPermissionGroup: PermissionGroup;
   /** Create virtual_server */
   createVirtualServer: VirtualServer;
+  /** Create virtual_server_alias */
+  createVirtualServerAlias: VirtualServerAlias;
   /** Deallocate a media server. Might occur when room is empty for a period. */
   deallocateMediaServer: Scalars['Boolean']['output'];
   /** Delete channel. */
@@ -66,6 +79,10 @@ export type Mutation = {
   deletePermissionGroup: Scalars['Boolean']['output'];
   /** Delete virtual_server. */
   deleteVirtualServer: Scalars['Boolean']['output'];
+  /** Delete virtual_server_alias. */
+  deleteVirtualServerAlias: Scalars['Boolean']['output'];
+  /** Join server via server alias */
+  joinServerByAlias: VirtualServerInfo;
   /** Login anonymous user. */
   loginAnonymous: SessionToken;
   /** Login classic user */
@@ -88,6 +105,8 @@ export type Mutation = {
   updatePermissionGroup: PermissionGroup;
   /** Update virtual_server. Create if not exist. */
   updateVirtualServer: VirtualServer;
+  /** Update virtual_server_alias. Create if not exist. */
+  updateVirtualServerAlias: VirtualServerAlias;
 };
 
 
@@ -101,6 +120,11 @@ export type MutationBindAnonymousIdentifyArgs = {
   publicKey: Scalars['String']['input'];
   signature: Scalars['String']['input'];
   timestamp: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateAliasForServerArgs = {
+  serverId: Scalars['obfuscatedId']['input'];
 };
 
 
@@ -125,6 +149,11 @@ export type MutationCreateVirtualServerArgs = {
 };
 
 
+export type MutationCreateVirtualServerAliasArgs = {
+  data: VirtualServerAliasPartialOptionalInput;
+};
+
+
 export type MutationDeallocateMediaServerArgs = {
   channelId: Scalars['obfuscatedId']['input'];
 };
@@ -142,6 +171,16 @@ export type MutationDeletePermissionGroupArgs = {
 
 export type MutationDeleteVirtualServerArgs = {
   itemId: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteVirtualServerAliasArgs = {
+  itemId: Scalars['Int']['input'];
+};
+
+
+export type MutationJoinServerByAliasArgs = {
+  alias: Scalars['String']['input'];
 };
 
 
@@ -211,6 +250,12 @@ export type MutationUpdateVirtualServerArgs = {
   itemId: Scalars['Int']['input'];
 };
 
+
+export type MutationUpdateVirtualServerAliasArgs = {
+  data: VirtualServerAliasOptionalInput;
+  itemId: Scalars['Int']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   /** Decrypt a number */
@@ -223,6 +268,8 @@ export type Query = {
   retrievePermissionGroup: Array<PermissionGroup>;
   /** Retrieve paged virtual_server instances. */
   retrieveVirtualServer: Array<VirtualServer>;
+  /** Retrieve paged virtual_server_alias instances. */
+  retrieveVirtualServerAlias: Array<VirtualServerAlias>;
   /** Get self info */
   selfInfo: ClassicUserAnonymousUser;
   /** Get server time */
@@ -233,6 +280,8 @@ export type Query = {
   serviceRegistryInfo: ServiceRegistryInfo;
   /** Get user info by id */
   userInfo: ClassicUserAnonymousUser;
+  /** Get list of server user joined */
+  userServerList: Array<VirtualServerInfo>;
 };
 
 
@@ -259,6 +308,12 @@ export type QueryRetrievePermissionGroupArgs = {
 
 
 export type QueryRetrieveVirtualServerArgs = {
+  page?: Scalars['Int']['input'];
+  pageSize?: Scalars['Int']['input'];
+};
+
+
+export type QueryRetrieveVirtualServerAliasArgs = {
   page?: Scalars['Int']['input'];
   pageSize?: Scalars['Int']['input'];
 };
@@ -308,6 +363,15 @@ export enum UserType {
   Anonymous = 'ANONYMOUS',
   Classic = 'CLASSIC'
 }
+
+export type VirtualServerInfo = {
+  __typename?: 'VirtualServerInfo';
+  /** Get list of channel in server */
+  channels: Array<ChannelInfo>;
+  configuration: Scalars['JSON']['output'];
+  id: Scalars['obfuscatedId']['output'];
+  name: Scalars['String']['output'];
+};
 
 export type Channel = {
   __typename?: 'channel';
@@ -385,6 +449,36 @@ export type VirtualServer = {
   name: Scalars['String']['output'];
   /** updated_at of the virtual_server */
   updatedAt: Scalars['DateTime']['output'];
+};
+
+export type VirtualServerAlias = {
+  __typename?: 'virtualServerAlias';
+  /** id of the virtual_server_alias */
+  id?: Maybe<Scalars['Int']['output']>;
+  /** name of the virtual_server_alias */
+  name: Scalars['String']['output'];
+  /** valid of the virtual_server_alias */
+  valid: Scalars['Boolean']['output'];
+  /** virtual_server_id of the virtual_server_alias */
+  virtualServerId: Scalars['Int']['output'];
+};
+
+export type VirtualServerAliasOptionalInput = {
+  /** name of the virtual_server_alias */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** valid of the virtual_server_alias */
+  valid?: InputMaybe<Scalars['Boolean']['input']>;
+  /** virtual_server_id of the virtual_server_alias */
+  virtualServerId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type VirtualServerAliasPartialOptionalInput = {
+  /** name of the virtual_server_alias */
+  name: Scalars['String']['input'];
+  /** valid of the virtual_server_alias */
+  valid: Scalars['Boolean']['input'];
+  /** virtual_server_id of the virtual_server_alias */
+  virtualServerId: Scalars['Int']['input'];
 };
 
 export type VirtualServerOptionalInput = {
