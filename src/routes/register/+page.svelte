@@ -82,6 +82,11 @@
 	function captchaCallback(event: CustomEvent<{ token: string }>) {
 		challengeToken = event.detail.token;
 	}
+
+	function captchaExpired() {
+		challengeToken = null;
+		turnstileDOM.reset();
+	}
 </script>
 
 <div class="flex h-screen flex-row flex-nowrap">
@@ -114,6 +119,7 @@
 				size="flexible"
 				bind:this={turnstileDOM}
 				on:callback={captchaCallback}
+				on:expired={captchaExpired}
 			></Turnstile>
 			<Button.Root
 				type="submit"
