@@ -1,8 +1,9 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-	readonly HF_BUSINESS_ENDPOINT: string;
-	readonly BASE_PATH?: string;
+	readonly VITE_BUSINESS_ENDPOINT: string;
+	readonly VITE_TURNSTILE_SITE_KEY: string;
+	readonly VITE_BASE_PATH?: string;
 }
 
 interface ImportMeta {

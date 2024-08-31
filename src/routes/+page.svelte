@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DarkModeSwitcher from '../components/DarkModeSwitcher.svelte';
+	import DarkModeSwitcher from '$lib/components/DarkModeSwitcher.svelte';
 </script>
 
 <div class="container font-sans">

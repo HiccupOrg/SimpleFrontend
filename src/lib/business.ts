@@ -9,7 +9,7 @@ export const REGISTER_ANONYMOUS_IDENTIFY = gql`
 	}
 `;
 
-export const GraphQLEndpoint = import.meta.env.HF_BUSINESS_ENDPOINT;
+export const GraphQLEndpoint = import.meta.env.VITE_BUSINESS_ENDPOINT;
 
 export const GraphQLClient = new ApolloClient({
 	uri: GraphQLEndpoint,

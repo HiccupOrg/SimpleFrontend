@@ -4,7 +4,7 @@
 
 @layer base
   :root
-    --color-primary: 79 70 229
+    --color-primary: 199 210 254
     --color-secondary: 2 132 199
     --color-background: 199 210 254
     --color-primary-text: 30 41 59
@@ -16,4 +16,8 @@
     --color-primary-text: 239 246 255
 
   [data-button-root]
-    @apply inline-flex h-12 items-center justify-center rounded-xl bg-primary text-xl font-semibold text-default shadow-lg hover:bg-primary/95 active:scale-95 active:transition-all p-2.5
+    @apply inline-flex h-12 items-center justify-center rounded-xl bg-primary text-xl font-semibold text-default shadow-lg hover:bg-primary/95 active:scale-95 active:transition-all p-2.5 select-none
+
+  [data-label-root]
+    @apply inline-flex items-center text-base text-default w-fit p-2.5 rounded-2xl select-none
+
