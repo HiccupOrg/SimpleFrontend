@@ -552,3 +552,10 @@ export type GetServerInfoDetailedQueryVariables = Exact<{
 
 
 export type GetServerInfoDetailedQuery = { __typename?: 'Query', serverInfo: { __typename?: 'VirtualServerInfo', id: unknown, name: string, configuration: unknown, channels: Array<{ __typename?: 'ChannelInfo', id: unknown, name: string, joinable: boolean, configuration: unknown }> } };
+
+export type AllocateMediaServerMutationVariables = Exact<{
+  channelId: Scalars['obfuscatedId']['input'];
+}>;
+
+
+export type AllocateMediaServerMutation = { __typename?: 'Mutation', allocateMediaServer: { __typename?: 'MediaSignalServerConnectionInfo', hostname: string, port: number, token: string } };

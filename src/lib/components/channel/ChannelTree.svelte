@@ -29,6 +29,9 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { melt, type TreeView } from '@melt-ui/svelte';
+	import { getDefaultMicrophone, mediaContext } from '$lib/media';
+	import { infoToast } from '$lib/components/toast/Toaster.svelte';
+	import { get } from 'svelte/store';
 
 	export let channelItems: ChannelItem[];
 	export let level = 1;
@@ -38,6 +41,26 @@
 		elements: { item, group },
 		helpers: { isSelected }
 	} = getContext<TreeView>(meltContextName);
+
+	function createJoinChannelHandler(channelId: string) {
+		return async () => {
+			await mediaContext.refresh();
+			let context = get(mediaContext);
+			if (context.error !== null || context.data === null) {
+				infoToast('Device error', "Failed to create media device");
+				return;
+			}
+
+			try {
+				await context.data.initialize(channelId);
+				await context.data.createAudioProducer();
+			} catch (error) {
+				console.error(error);
+				infoToast('Device error', "Failed to initialize media device");
+				return;
+			}
+		};
+	}
 </script>
 
 {#each channelItems as { id, name, type, children } (id)}
@@ -50,6 +73,7 @@
 				id,
 				hasChildren
 			})}
+			on:click={createJoinChannelHandler(id)}
 		>
 			<svelte:component this={ChannelIcons[type]} class="h-4 w-4" />
 

@@ -61,6 +61,16 @@ export const GET_SERVER_INFO_DETAILED = gql`
 	}
 `;
 
+export const ALLOCATE_MEDIA_SERVER_FOR_CHANNEL = gql`
+	mutation AllocateMediaServer($channelId: obfuscatedId!) {
+		allocateMediaServer(channelId: $channelId) {
+			hostname,
+			port,
+			token,
+		}
+	}
+`;
+
 export const GraphQLEndpoint = import.meta.env.VITE_BUSINESS_ENDPOINT;
 
 export const GraphQLClient = new ApolloClient({

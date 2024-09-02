@@ -7,7 +7,7 @@
 	import { serverListStore, uiChannelItems } from '$lib/store/server';
 	import { infoToast } from '$lib/components/toast/Toaster.svelte';
 	import { onMount } from 'svelte';
-	import { validateAuthToken } from '$lib/store/user';
+	import { auth, validateAuthToken } from '$lib/store/user';
 	import { goto } from '$app/navigation';
 	import LoadSpinner from '$lib/components/LoadSpinner.svelte';
 	import NetworkError from '$lib/components/NetworkError.svelte';
@@ -17,6 +17,9 @@
 	validateAuthToken().then((isValid) => {
 		if (!isValid) {
 			infoToast('Login Expired', 'Redirecting to login page...', 3000);
+			auth.set({
+				token: undefined,
+			});
 			setTimeout(() => goto('/login'), 3000);
 		}
 	});
