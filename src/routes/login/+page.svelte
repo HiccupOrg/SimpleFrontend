@@ -2,7 +2,7 @@
 	import { Button, Label } from 'bits-ui';
 	import { Turnstile } from 'svelte-turnstile';
 	import { getCurrentColorMode } from '$lib/darkMode';
-	import { addToast } from '$lib/components/toast/Toaster.svelte';
+	import { infoToast } from '$lib/components/toast/Toaster.svelte';
 	import { GraphQLClient, LOGIN_CLASSIC } from '$lib/business';
 	import type {
 		LoginClassicMutation,
@@ -20,14 +20,7 @@
 	let turnstileDOM: Turnstile;
 
 	if (browser && userLoggedIn()) {
-		addToast({
-			data: {
-				title: 'Already login',
-				description: 'Redirecting to home page in 3 seconds',
-				color: 'green'
-			},
-			closeDelay: 3000
-		});
+		infoToast('Already login', 'Redirecting to home page in 3 seconds', 3000);
 		setTimeout(() => goto('/home'), 3000);
 	}
 
@@ -42,14 +35,7 @@
 
 		(async () => {
 			if (typeof challengeToken !== 'string') {
-				addToast({
-					data: {
-						title: 'Captcha Error',
-						description: 'You must finish captcha challenge first',
-						color: 'red'
-					},
-					closeDelay: 1500
-				});
+				infoToast('Captcha Error', 'You must finish captcha challenge first', 1500);
 				return;
 			}
 
@@ -77,25 +63,12 @@
 				}
 			} catch (err) {
 				if (err instanceof ApolloError) {
-					addToast({
-						data: {
-							title: 'Login failed',
-							description: err.message
-						},
-						closeDelay: 1500
-					});
+					infoToast('Login failed', err.message, 3000);
 					return;
 				}
 			}
 
-			addToast({
-				data: {
-					title: 'Login success',
-					description: 'Redirecting to home page in 3 seconds',
-					color: 'green'
-				},
-				closeDelay: 3000
-			});
+			infoToast('Login success', 'Redirecting to home page in 3 seconds', 3000);
 
 			setTimeout(() => goto('/home'), 3000);
 		})().finally(() => {

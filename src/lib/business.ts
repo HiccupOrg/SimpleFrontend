@@ -25,6 +25,26 @@ export const LOGIN_CLASSIC = gql`
 	}
 `;
 
+export const GET_USER_SERVER_LIST = gql`
+	query GetUserServerList {
+		userServerList {
+			id
+			name
+			configuration
+		}
+	}
+`;
+
+export const GET_CURRENT_USER_INFO_SIMPLE = gql`
+	query GetCurrentUserInfoSimple {
+		selfInfo {
+			... on UserBase {
+				type
+			}
+		}
+	}
+`;
+
 export const GraphQLEndpoint = import.meta.env.VITE_BUSINESS_ENDPOINT;
 
 export const GraphQLClient = new ApolloClient({

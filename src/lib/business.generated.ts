@@ -528,3 +528,13 @@ export type LoginClassicMutationVariables = Exact<{
 
 
 export type LoginClassicMutation = { __typename?: 'Mutation', loginClassic: { __typename?: 'SessionToken', token: string } };
+
+export type GetUserServerListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserServerListQuery = { __typename?: 'Query', userServerList: Array<{ __typename?: 'VirtualServerInfo', id: unknown, name: string, configuration: unknown }> };
+
+export type GetCurrentUserInfoSimpleQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserInfoSimpleQuery = { __typename?: 'Query', selfInfo: { __typename?: 'AnonymousUser', type: UserType } | { __typename?: 'ClassicUser', type: UserType } };

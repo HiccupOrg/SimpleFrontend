@@ -13,6 +13,17 @@
 	} = createToaster<ToastData>();
 
 	export const addToast = helpers.addToast;
+
+	export const infoToast = (title: string, description: string, timeout: number = 3000) => {
+		addToast({
+			data: {
+				title,
+				description,
+				color: 'green'
+			},
+			closeDelay: timeout
+		});
+	};
 </script>
 
 <script lang="ts">

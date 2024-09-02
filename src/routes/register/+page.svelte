@@ -2,7 +2,7 @@
 	import { Button, Label } from 'bits-ui';
 	import { Turnstile } from 'svelte-turnstile';
 	import { getCurrentColorMode } from '$lib/darkMode';
-	import { addToast } from '$lib/components/toast/Toaster.svelte';
+	import { infoToast } from '$lib/components/toast/Toaster.svelte';
 	import { GraphQLClient, REGISTER_CLASSIC_IDENTIFY } from '$lib/business';
 	import type {
 		RegisterClassicMutation,
@@ -20,14 +20,7 @@
 	let turnstileDOM: Turnstile;
 
 	if (browser && userLoggedIn()) {
-		addToast({
-			data: {
-				title: 'Already login',
-				description: 'Redirecting to home page in 3 seconds',
-				color: 'green'
-			},
-			closeDelay: 3000
-		});
+		infoToast('Already login', 'Redirecting to home page in 3 seconds', 3000);
 		setTimeout(() => goto('/home'), 3000);
 	}
 
@@ -42,13 +35,7 @@
 
 		(async () => {
 			if (typeof challengeToken !== 'string') {
-				addToast({
-					data: {
-						title: 'Captcha Error',
-						description: 'You must finish captcha challenge first'
-					},
-					closeDelay: 1500
-				});
+				infoToast('Captcha Error', 'You must finish captcha challenge first', 1500);
 				return;
 			}
 
@@ -70,25 +57,12 @@
 				});
 			} catch (err) {
 				if (err instanceof ApolloError) {
-					addToast({
-						data: {
-							title: 'Register failed',
-							description: err.message
-						},
-						closeDelay: 1500
-					});
+					infoToast('Register failed', err.message, 3000);
 					return;
 				}
 			}
 
-			addToast({
-				data: {
-					title: 'Register success',
-					description: 'Redirecting to login page in 3 seconds',
-					color: 'green'
-				},
-				closeDelay: 3000
-			});
+			infoToast('Register success', 'Redirecting to login page in 3 seconds', 3000);
 
 			setTimeout(() => goto('/login'), 3000);
 		})().finally(() => {

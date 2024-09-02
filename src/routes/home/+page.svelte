@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { userLoggedIn } from '$lib/store';
+	import { userLoggedIn } from '$lib/store/user';
 	import { goto } from '$app/navigation';
 
 	if (browser && !userLoggedIn()) {

@@ -4,6 +4,22 @@
 	import { IconHeadphones, IconRefresh, IconX } from '@tabler/icons-svelte';
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, fly } from 'svelte/transition';
+	import { serverListStore } from '$lib/store/server';
+	import { infoToast } from '$lib/components/toast/Toaster.svelte';
+	import { onMount } from 'svelte';
+	import { validateAuthToken } from '$lib/store/user';
+	import { goto } from '$app/navigation';
+	import LoadSpinner from '$lib/components/LoadSpinner.svelte';
+	import NetworkError from '$lib/components/NetworkError.svelte';
+	import { get } from 'svelte/store';
+	import ServerCard from '$lib/components/ServerCard.svelte';
+
+	validateAuthToken().then((isValid) => {
+		if (!isValid) {
+			infoToast('Login Expired', 'Redirecting to login page...', 3000);
+			setTimeout(() => goto('/login'), 3000);
+		}
+	});
 
 	const {
 		elements: {
@@ -22,6 +38,20 @@
 	});
 
 	const menuFly = (element: Element) => fly(element, { duration: 150, y: -10 });
+
+	function onRefreshServerList() {
+		serverListStore.refresh().then(() => {
+			infoToast('Success', 'Newly server list has been loaded');
+		});
+	}
+
+	onMount(() => {
+		const unsubscribeHandle = openServerSelector.subscribe((value) => {
+			if (value) {
+				serverListStore.load().then(() => unsubscribeHandle());
+			}
+		});
+	});
 </script>
 
 <div class="flex h-screen w-screen flex-col">
@@ -73,7 +103,8 @@
 		/>
 		<div
 			use:melt={$contentServerSelector}
-			class="fixed left-0 top-0 z-50 h-screen w-full max-w-[350px] bg-background p-6 shadow-lg focus:outline-none"
+			class="fixed left-0 top-0 z-50 h-screen w-full max-w-[350px]
+			 overflow-y-auto overflow-x-hidden bg-background p-6 shadow-lg focus:outline-none"
 			transition:fly={{
 				x: -350,
 				duration: 300,
@@ -96,15 +127,25 @@
 					inline-flex h-6 w-6 appearance-none items-center
 					justify-center rounded-full text-default focus:outline-none
 					focus:ring-2"
+				on:click={onRefreshServerList}
 			>
 				<IconRefresh class="size-4 text-default"></IconRefresh>
 			</button>
 			<h2
 				use:melt={$titleServerSelector}
-				class="mb-0 select-none text-lg font-medium text-default"
+				class="mb-5 select-none text-lg font-medium text-default"
 			>
 				Server List
 			</h2>
+			{#if $serverListStore.loading}
+				<LoadSpinner>Loading server list</LoadSpinner>
+			{:else if $serverListStore.error !== null}
+				<NetworkError>Failed to load server list, please try again</NetworkError>
+			{:else}
+				{#each $serverListStore.data ?? [] as { id, name } (id)}
+					<ServerCard serverId={id} serverName={name}></ServerCard>
+				{/each}
+			{/if}
 		</div>
 	</div>
 {/if}
