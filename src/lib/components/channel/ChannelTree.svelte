@@ -43,7 +43,7 @@
 {#each channelItems as { id, name, type, children } (id)}
 	{@const hasChildren = !!children?.length}
 
-	<li class="{level !== 1 ? 'pl-4' : ''} select-none">
+	<li class="{level !== 1 ? 'pl-4' : ''} select-none text-default">
 		<button
 			class="flex items-center gap-1 rounded-md p-1 focus:bg-primary/50"
 			use:melt={$item({
