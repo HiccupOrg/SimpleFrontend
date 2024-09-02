@@ -4,7 +4,7 @@
 	import { goto } from '$app/navigation';
 
 	if (browser && !userLoggedIn()) {
-		setTimeout(() => goto('/login'), 3000);
+		goto('/login');
 	}
 </script>
 

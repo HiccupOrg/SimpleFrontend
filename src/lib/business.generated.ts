@@ -26,6 +26,13 @@ export type AnonymousUser = UserBase & {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type AuthTokenInfo = {
+  __typename?: 'AuthTokenInfo';
+  id: Scalars['obfuscatedId']['output'];
+  issuedAt: Scalars['DateTime']['output'];
+  revokedAt: Scalars['DateTime']['output'];
+};
+
 export type ChannelInfo = {
   __typename?: 'ChannelInfo';
   configuration: Scalars['JSON']['output'];
@@ -37,6 +44,10 @@ export type ChannelInfo = {
 
 export type ClassicUser = UserBase & {
   __typename?: 'ClassicUser';
+  /** The anonymous identify user own */
+  anonymousIdentifies: Array<AnonymousUser>;
+  /** The auth token user have */
+  authTokens: Array<AuthTokenInfo>;
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['obfuscatedId']['output'];
   type: UserType;
