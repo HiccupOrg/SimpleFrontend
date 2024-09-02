@@ -18,7 +18,7 @@
 		if (!isValid) {
 			infoToast('Login Expired', 'Redirecting to login page...', 3000);
 			auth.set({
-				token: undefined,
+				token: undefined
 			});
 			setTimeout(() => goto('/login'), 3000);
 		}

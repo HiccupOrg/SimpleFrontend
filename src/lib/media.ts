@@ -1,15 +1,18 @@
 import * as msClient from 'mediasoup-client';
 import * as socket from 'socket.io-client';
 import { ALLOCATE_MEDIA_SERVER_FOR_CHANNEL, GraphQLClient } from '$lib/business';
-import type { AllocateMediaServerMutation, AllocateMediaServerMutationVariables } from '$lib/business.generated';
+import type {
+	AllocateMediaServerMutation,
+	AllocateMediaServerMutationVariables
+} from '$lib/business.generated';
 import { getAuthHeader } from '$lib/store/user';
 import { browser } from '$app/environment';
 import createLazyStore from '$lib/store/lazy';
 
 interface MediaServerToClientEvents {
 	required_authorize: () => void;
-	critical_failure: (reason: { reason: string; }) => void;
-	operation_error: (reason: { reason: string; operation: string; }) => void;
+	critical_failure: (reason: { reason: string }) => void;
+	operation_error: (reason: { reason: string; operation: string }) => void;
 	user_audio_producer_updated: (data: {
 		userId: string;
 		oldProducerId?: string;
@@ -19,30 +22,35 @@ interface MediaServerToClientEvents {
 
 interface MediaClientToServerEvents {
 	authorize: (token: { token: string }, callback: () => void) => void;
-	request_connection_info: (callback: (
-		data: {
+	request_connection_info: (
+		callback: (data: {
 			id: string;
-			routerRtpCapabilities: msClient.types.RtpCapabilities,
-			iceParameters: msClient.types.IceParameters,
-			iceCandidates: msClient.types.IceCandidate[],
-			dtlsParameters: msClient.types.DtlsParameters,
-		}
-	) => void) => void;
-	request_connect: (data: {
-		dtlsParameters: msClient.types.DtlsParameters,
-	}, callback: (ok: boolean) => void) => void;
+			routerRtpCapabilities: msClient.types.RtpCapabilities;
+			iceParameters: msClient.types.IceParameters;
+			iceCandidates: msClient.types.IceCandidate[];
+			dtlsParameters: msClient.types.DtlsParameters;
+		}) => void
+	) => void;
+	request_connect: (
+		data: {
+			dtlsParameters: msClient.types.DtlsParameters;
+		},
+		callback: (ok: boolean) => void
+	) => void;
 	place_audio_producer: (
 		producerInfo: {
 			kind: msClient.types.MediaKind;
 			rtpParameters: msClient.types.RtpParameters;
-		}, callback: (
+		},
+		callback: (
 			data?: {
 				producerId: string;
 			},
 			error?: {
 				requireRenewTransport?: boolean;
-			},
-		) => void) => void;
+			}
+		) => void
+	) => void;
 	place_video_producer: (
 		producerInfo: {
 			kind: msClient.types.MediaKind;
@@ -54,29 +62,36 @@ interface MediaClientToServerEvents {
 			},
 			error?: {
 				requireRenewTransport?: boolean;
-			},
-		) => void) => void;
+			}
+		) => void
+	) => void;
 	request_change_name: (newName: string) => void;
 }
 
 export const getDefaultMicrophone = async () => {
-	if (!browser) throw new Error("Nerve call getDefaultMicrophone from server env");
+	if (!browser) throw new Error('Nerve call getDefaultMicrophone from server env');
 
 	const devices = await navigator.mediaDevices.enumerateDevices();
-	return devices.find((device) => device.kind === 'audioinput' && (device.deviceId === 'default' || device.deviceId === 'communications'));
+	return devices.find(
+		(device) =>
+			device.kind === 'audioinput' &&
+			(device.deviceId === 'default' || device.deviceId === 'communications')
+	);
 };
 
 export const allocateMediaServer = async (channelId: string) => {
-	const result =
-		await GraphQLClient.mutate<AllocateMediaServerMutation, AllocateMediaServerMutationVariables>({
-			mutation: ALLOCATE_MEDIA_SERVER_FOR_CHANNEL,
-			variables: {
-				channelId,
-			},
-			context: {
-				headers: getAuthHeader(),
-			}
-		});
+	const result = await GraphQLClient.mutate<
+		AllocateMediaServerMutation,
+		AllocateMediaServerMutationVariables
+	>({
+		mutation: ALLOCATE_MEDIA_SERVER_FOR_CHANNEL,
+		variables: {
+			channelId
+		},
+		context: {
+			headers: getAuthHeader()
+		}
+	});
 
 	return result.data!.allocateMediaServer;
 };
@@ -112,12 +127,15 @@ class MediaContext {
 		this.mediaSeverInfo = await allocateMediaServer(channelId);
 
 		if (!this.mediaSeverInfo) {
-			throw ("Failed to allocate media server");
+			throw 'Failed to allocate media server';
 		}
 
-		this.dataSocket = socket.io(`${this.mediaSeverInfo.hostname}:${this.mediaSeverInfo.port}/media`, {
-			autoConnect: false,
-		});
+		this.dataSocket = socket.io(
+			`${this.mediaSeverInfo.hostname}:${this.mediaSeverInfo.port}/media`,
+			{
+				autoConnect: false
+			}
+		);
 
 		this.dataSocket.onAny(console.log);
 
@@ -125,19 +143,23 @@ class MediaContext {
 
 		await new Promise<void>((resolve) => {
 			this.dataSocket!.on('required_authorize', () => {
-				this.dataSocket!.emit('authorize', {
-					token: this.mediaSeverInfo!.token,
-				}, () => resolve());
+				this.dataSocket!.emit(
+					'authorize',
+					{
+						token: this.mediaSeverInfo!.token
+					},
+					() => resolve()
+				);
 			});
 		});
 	}
 
 	private requestConnectionInfo(): Promise<{
-			id: string,
-			routerRtpCapabilities: msClient.types.RtpCapabilities,
-			iceParameters: msClient.types.IceParameters,
-			iceCandidates: msClient.types.IceCandidate[],
-			dtlsParameters: msClient.types.DtlsParameters,
+		id: string;
+		routerRtpCapabilities: msClient.types.RtpCapabilities;
+		iceParameters: msClient.types.IceParameters;
+		iceCandidates: msClient.types.IceCandidate[];
+		dtlsParameters: msClient.types.DtlsParameters;
 	}> {
 		return new Promise((resolve) => {
 			this.dataSocket!.emit('request_connection_info', (result) => {
@@ -147,11 +169,12 @@ class MediaContext {
 	}
 
 	private async tryConnect() {
-		const { id, routerRtpCapabilities, iceParameters, iceCandidates, dtlsParameters } = await this.requestConnectionInfo();
+		const { id, routerRtpCapabilities, iceParameters, iceCandidates, dtlsParameters } =
+			await this.requestConnectionInfo();
 
 		if (!this.device.loaded) {
 			await this.device.load({
-				routerRtpCapabilities: routerRtpCapabilities,
+				routerRtpCapabilities: routerRtpCapabilities
 			});
 		}
 
@@ -159,14 +182,14 @@ class MediaContext {
 			id,
 			iceParameters,
 			iceCandidates,
-			dtlsParameters,
+			dtlsParameters
 		});
 
 		this.recvTransport = this.device.createSendTransport({
 			id,
 			iceParameters,
 			iceCandidates,
-			dtlsParameters,
+			dtlsParameters
 		});
 
 		this.setupTransport(this.sendTransport);
@@ -175,19 +198,27 @@ class MediaContext {
 
 	private setupTransport(transport: msClient.types.Transport) {
 		transport.on('connect', async ({ dtlsParameters }, callback) => {
-			this.dataSocket!.emit('request_connect', {
-				dtlsParameters,
-			}, callback);
+			this.dataSocket!.emit(
+				'request_connect',
+				{
+					dtlsParameters
+				},
+				callback
+			);
 		});
 
 		transport.on('produce', async (parameters, callback, reject) => {
 			if (parameters.kind === 'video') {
 				reject(new Error("We don't support video stream yet"));
 			}
-			this.dataSocket!.emit('place_audio_producer', {
-				kind: parameters.kind,
-				rtpParameters: parameters.rtpParameters,
-			}, (id) => callback({ id: id!.producerId }));
+			this.dataSocket!.emit(
+				'place_audio_producer',
+				{
+					kind: parameters.kind,
+					rtpParameters: parameters.rtpParameters
+				},
+				(id) => callback({ id: id!.producerId })
+			);
 		});
 
 		transport.on('connectionstatechange', console.log);
@@ -199,12 +230,12 @@ class MediaContext {
 		}
 
 		const device = await navigator.mediaDevices.getUserMedia({
-			audio: true,
+			audio: true
 		});
 
 		const track = device.getAudioTracks()[0];
 		this.audioProducer = await this.sendTransport!.produce({
-			track,
+			track
 		});
 	}
 }

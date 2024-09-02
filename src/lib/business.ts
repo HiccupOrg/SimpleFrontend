@@ -64,9 +64,9 @@ export const GET_SERVER_INFO_DETAILED = gql`
 export const ALLOCATE_MEDIA_SERVER_FOR_CHANNEL = gql`
 	mutation AllocateMediaServer($channelId: obfuscatedId!) {
 		allocateMediaServer(channelId: $channelId) {
-			hostname,
-			port,
-			token,
+			hostname
+			port
+			token
 		}
 	}
 `;

@@ -47,7 +47,7 @@
 			await mediaContext.refresh();
 			let context = get(mediaContext);
 			if (context.error !== null || context.data === null) {
-				infoToast('Device error', "Failed to create media device");
+				infoToast('Device error', 'Failed to create media device');
 				return;
 			}
 
@@ -56,7 +56,7 @@
 				await context.data.createAudioProducer();
 			} catch (error) {
 				console.error(error);
-				infoToast('Device error', "Failed to initialize media device");
+				infoToast('Device error', 'Failed to initialize media device');
 				return;
 			}
 		};
