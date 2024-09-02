@@ -1,6 +1,7 @@
-import type { Config } from 'tailwindcss';
+import { type Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 import TailwindColors from 'tailwindcss/colors';
+import plugin from 'tailwindcss/plugin';
 
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -79,5 +80,20 @@ export default {
 		}
 	},
 
-	plugins: [typography]
-} as Config;
+	plugins: [
+		typography,
+		plugin(({ addVariant, matchUtilities, theme }): void => {
+			addVariant('hocus', ['&:hover', '&:focus']);
+			// Square utility
+			matchUtilities(
+				{
+					square: (value) => ({
+						width: value,
+						height: value
+					})
+				},
+				{ values: theme('spacing') }
+			);
+		})
+	]
+} satisfies Config;

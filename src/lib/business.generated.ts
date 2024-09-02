@@ -283,6 +283,8 @@ export type Query = {
   retrieveVirtualServerAlias: Array<VirtualServerAlias>;
   /** Get self info */
   selfInfo: ClassicUserAnonymousUser;
+  /** Get server info */
+  serverInfo: VirtualServerInfo;
   /** Get server time */
   serverTime: Scalars['DateTime']['output'];
   /** Get system time */
@@ -327,6 +329,11 @@ export type QueryRetrieveVirtualServerArgs = {
 export type QueryRetrieveVirtualServerAliasArgs = {
   page?: Scalars['Int']['input'];
   pageSize?: Scalars['Int']['input'];
+};
+
+
+export type QueryServerInfoArgs = {
+  serverId: Scalars['obfuscatedId']['input'];
 };
 
 
@@ -538,3 +545,10 @@ export type GetCurrentUserInfoSimpleQueryVariables = Exact<{ [key: string]: neve
 
 
 export type GetCurrentUserInfoSimpleQuery = { __typename?: 'Query', selfInfo: { __typename?: 'AnonymousUser', type: UserType } | { __typename?: 'ClassicUser', type: UserType } };
+
+export type GetServerInfoDetailedQueryVariables = Exact<{
+  serverId: Scalars['obfuscatedId']['input'];
+}>;
+
+
+export type GetServerInfoDetailedQuery = { __typename?: 'Query', serverInfo: { __typename?: 'VirtualServerInfo', id: unknown, name: string, configuration: unknown, channels: Array<{ __typename?: 'ChannelInfo', id: unknown, name: string, joinable: boolean, configuration: unknown }> } };

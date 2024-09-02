@@ -4,15 +4,15 @@
 	import { IconHeadphones, IconRefresh, IconX } from '@tabler/icons-svelte';
 	import { createDialog, melt } from '@melt-ui/svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { serverListStore } from '$lib/store/server';
+	import { serverListStore, uiChannelItems } from '$lib/store/server';
 	import { infoToast } from '$lib/components/toast/Toaster.svelte';
 	import { onMount } from 'svelte';
 	import { validateAuthToken } from '$lib/store/user';
 	import { goto } from '$app/navigation';
 	import LoadSpinner from '$lib/components/LoadSpinner.svelte';
 	import NetworkError from '$lib/components/NetworkError.svelte';
-	import { get } from 'svelte/store';
 	import ServerCard from '$lib/components/ServerCard.svelte';
+	import ChannelView from '$lib/components/channel/ChannelView.svelte';
 
 	validateAuthToken().then((isValid) => {
 		if (!isValid) {
@@ -81,13 +81,13 @@
 	<!-- Content Area with Sidebar -->
 	<div class="flex flex-1 overflow-hidden">
 		<!-- Sidebar -->
-		<div class="h-full w-1/6 bg-navbar/80 p-4">
+		<div class="h-full w-1/6 overflow-auto bg-navbar/80 p-4">
 			<!-- Content for sidebar -->
+			<ChannelView channelItems={$uiChannelItems} />
 		</div>
 
 		<!-- Main Content -->
 		<div class="flex-1 overflow-auto p-4">
-			<!-- Content for main area -->
 			<slot />
 		</div>
 	</div>

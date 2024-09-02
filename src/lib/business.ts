@@ -45,6 +45,22 @@ export const GET_CURRENT_USER_INFO_SIMPLE = gql`
 	}
 `;
 
+export const GET_SERVER_INFO_DETAILED = gql`
+	query GetServerInfoDetailed($serverId: obfuscatedId!) {
+		serverInfo(serverId: $serverId) {
+			id
+			name
+			configuration
+			channels {
+				id
+				name
+				joinable
+				configuration
+			}
+		}
+	}
+`;
+
 export const GraphQLEndpoint = import.meta.env.VITE_BUSINESS_ENDPOINT;
 
 export const GraphQLClient = new ApolloClient({
