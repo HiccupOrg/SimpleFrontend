@@ -106,6 +106,7 @@ class MediaContext {
 	recvTransport?: msClient.types.Transport;
 
 	audioProducer?: msClient.types.Producer;
+	audioConsumers: msClient.types.Consumer[];
 
 	constructor() {
 		try {
@@ -116,11 +117,24 @@ class MediaContext {
 			}
 			throw error;
 		}
+		this.audioConsumers = [];
 	}
 
 	async initialize(channelId: string) {
 		await this.createSignalConnection(channelId);
 		await this.tryConnect();
+	}
+
+	async dispose() {
+		this.sendTransport?.close();
+		this.recvTransport?.close();
+		this.dataSocket?.disconnect();
+
+		this.sendTransport = undefined;
+		this.recvTransport = undefined;
+		this.audioProducer = undefined;
+		this.audioConsumers = [];
+		this.dataSocket = undefined;
 	}
 
 	private async createSignalConnection(channelId: string) {
@@ -244,4 +258,10 @@ const createMediaContext = (): MediaContext => {
 	return new MediaContext();
 };
 
-export const mediaContext = createLazyStore<MediaContext>(createMediaContext);
+export const mediaContext = createLazyStore<MediaContext>(
+	createMediaContext,
+	null,
+	async (value) => {
+		await value.dispose();
+	}
+);

@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 interface LazyInternalData<T> {
 	data: T | null;
@@ -6,12 +6,17 @@ interface LazyInternalData<T> {
 	error: unknown | null;
 }
 
-const createLazyStore = <T>(resolver: () => Promise<T> | T, defaultValue: T | null = null) => {
-	const { subscribe, set, update } = writable<LazyInternalData<T>>({
+const createLazyStore = <T>(
+	resolver: () => Promise<T> | T,
+	defaultValue: T | null = null,
+	dispose?: (value: T) => Promise<void> | void
+) => {
+	const storeValue = writable<LazyInternalData<T>>({
 		data: defaultValue,
 		loading: false,
 		error: null
 	});
+	const { subscribe, set, update } = storeValue;
 
 	async function load() {
 		update((state) => ({
@@ -37,6 +42,12 @@ const createLazyStore = <T>(resolver: () => Promise<T> | T, defaultValue: T | nu
 	}
 
 	async function refresh() {
+		if (dispose) {
+			const ref = get(storeValue);
+			if (ref.data !== null) {
+				await dispose(ref.data);
+			}
+		}
 		await load();
 	}
 
